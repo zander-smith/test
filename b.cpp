@@ -12,6 +12,8 @@ string solve(int N, int R, int O, int Y, int G, int B, int V)
 {
   char last = '\0';
   int n = N;
+  char max_char;
+  int max = 0;
   string s = "";
   // need to buffer G with R, O with B and V with Y
   while (n > 0)
@@ -19,37 +21,77 @@ string solve(int N, int R, int O, int Y, int G, int B, int V)
     // find max of R, G, Y
     switch (last)
     {
+      case 'G':
+        if (R > 0) { s = s + (last = 'R'); R--; }
+        else return "IMPOSSIBLE";
+      case 'O':
+        if (B > 0) { s = s + (last = 'B'); B--; }
+        else return "IMPOSSIBLE";
+      case 'V':
+        if (Y > 0) { s = s + (last = 'Y'); Y--; }
+        else return "IMPOSSIBLE";
       case 'R':
-        if ((R >= G) && (R > 0) && (G > 0))
-          { s = s + "GR"; G--; R--; n -= 2; }
-        if (B > Y) && (B > 0)
-          { s = s + (last = 'B'); B--; }
+        if ((G > Y) && (G > B))
+          if (G > 0) { s = s + (last = 'G'); G--; }
+          else return "IMPOSSIBLE";
+        else if ((Y > G) && (Y > B))
+          if (Y > 0) { s = s + (last = 'Y'); Y--; }
+          else return "IMPOSSIBLE";
         else
-          { s = s + (last = 'Y'); Y--; }
+          if (B > 0) { s = s + (last = 'B'); B--; }
+          else return "IMPOSSIBLE";
         break;
       case 'Y':
-        if (Y >= V)
-          { s = s + "VY"; V--; Y--; n -= 2; }
-        if (B > R)
-          { s = s + (last = 'B'); B--; }
+        if ((V > B) && (V > R))
+          if (V > 0) { s = s + (last = 'V'); V--; }
+          else return "IMPOSSIBLE";
+        else if ((B > V) && (B > R))
+          if (B > 0) { s = s + (last = 'B'); B--; }
+          else return "IMPOSSIBLE";
         else
-          { s = s + (last = 'R'); R--; }
+          if (R > 0) { s = s + (last = 'R'); R--; }
+          else return "IMPOSSIBLE";
         break;
       case 'B':
-        if (B >= O)
-          { s = s + "OB"; O--; B--; n -= 2; }
-        if (Y > R)
-          { s = s + (last = 'Y'); Y--; }
+        if ((O > R) && (O > Y))
+          if (O > 0) { s = s + (last = 'O'); O--; }
+          else return "IMPOSSIBLE";
+        else if ((R > O) && (R > Y))
+          if (R > 0) { s = s + (last = 'R'); R--; }
+          else return "IMPOSSIBLE";
         else
-          { s = s + (last = 'R'); R--; }
+          if (Y > 0) { s = s + (last = 'Y'); Y--; }
+          else return "IMPOSSIBLE";
         break;
       default:
-        if ((R > B) && (R > Y))
-          { s = s + (last = 'R'); R--; }
-        else if ((B > R) && (B > Y))
-          { s = s + (last = 'B'); B--; }
-        else
-          { s = s + (last = 'Y'); Y--; }
+        if (R > max) { max = R; max_char = 'R'; }
+        if (O > max) { max = O; max_char = 'O'; }
+        if (Y > max) { max = Y; max_char = 'Y'; }
+        if (G > max) { max = G; max_char = 'G'; }
+        if (V > max) { max = V; max_char = 'V'; }
+        if (B > max) { max = B; max_char = 'B'; }
+        s = s + max_char;
+        switch (max_char)
+        {
+          case 'R':
+            R--; last = 'R';
+            break;
+          case 'O':
+            O--; last = 'O';
+            break;
+          case 'Y':
+            Y--; last = 'Y';
+            break;
+          case 'G':
+            G--; last = 'G';
+            break;
+          case 'B':
+            B--; last = 'B';
+            break;
+          case 'V':
+            V--; last = 'V';
+            break;
+        }
     }
     n--;
   }
