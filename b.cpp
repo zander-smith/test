@@ -10,19 +10,44 @@ using namespace std;
 
 string solve(int N, int R, int O, int Y, int G, int B, int V)
 {
+  char last = '\0';
+  int n = N;
   string s = "";
-  for (int i = 0; i < R; i++)
-    s = s + "R";
-  for (int i = 0; i < O; i++)
-    s = s + "O";
-  for (int i = 0; i < Y; i++)
-    s = s + "Y";
-  for (int i = 0; i < G; i++)
-    s = s + "G";
-  for (int i = 0; i < B; i++)
-    s = s + "B";
-  for (int i = 0; i < V; i++)
-    s = s + "V";
+  // need to buffer G with R, O with B and V with Y
+  while (n > 0)
+  {
+    // find max of R, G, Y
+    select (last)
+    {
+      case 'R':
+        if (B > Y)
+          { s = s + (last = 'B'); B--; }
+        else
+          { s = s + (last = 'Y'); Y--; }
+        break;
+      case 'Y':
+        if (B > R)
+          { s = s + (last = 'B'); B--; }
+        else
+          { s = s + (last = 'R'); R--; }
+        break;
+      case 'B':
+        if (Y > R)
+          { s = s + (last = 'Y'); Y--; }
+        else
+          { s = s + (last = 'R'); R--; }
+        break;
+      default:
+        if ((R > B) && (R > Y))
+          { s = s + (last = 'R'); R--; }
+        else if ((B > R) && (B > Y))
+          { s = s + (last = 'B'); B--; }
+        else
+          { s = s + (last = 'Y'); Y--; }
+    }
+    n--;
+  }
+
   return s;
 }
 
