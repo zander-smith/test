@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <vector>
 #include <deque>
@@ -11,17 +12,27 @@ using namespace std;
 vector<int> init_pos;
 vector<int> max_spd;
 
-double solve()
+double solve(int D, int N)
 {
-  return 0;
+  double dist_remain, time_remain, max_time_remain = 0;
+  for (int i = 0; i < N; i++)
+  {
+    dist_remain = D - init_pos[i];
+    time_remain = dist_remain / max_spd[i];
+    if (time_remain > max_time_remain) max_time_remain = time_remain;
+  }
+
+  return D / max_time_remain;
 }
 
 int main(int argc, char * argv[])
 {
+  int D, N, ms, ip;
   double res;
   int nr_cases;
-  int D, N, ip, ms;
   cin >> nr_cases;
+
+  cout << fixed;
 
   for (int cas = 1; cas <= nr_cases; cas++)
   {
@@ -37,8 +48,8 @@ int main(int argc, char * argv[])
       max_spd.push_back(ms);
     }
 
-    res = solve();
+    res = solve(D, N);
 
-    cout << "Case #" << cas << ": " << res << endl;
+    cout << "Case #" << cas << ": " << setprecision(6) << res << endl;
   }
 }
