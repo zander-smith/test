@@ -20,20 +20,24 @@ string solve(int N, int R, int O, int Y, int G, int B, int V)
     switch (last)
     {
       case 'R':
-        if (R >= G)
-          { s = s + "GR"; G--; R--; }
-        if (B > Y)
+        if ((R >= G) && (R > 0) && (G > 0))
+          { s = s + "GR"; G--; R--; n -= 2; }
+        if (B > Y) && (B > 0)
           { s = s + (last = 'B'); B--; }
         else
           { s = s + (last = 'Y'); Y--; }
         break;
       case 'Y':
+        if (Y >= V)
+          { s = s + "VY"; V--; Y--; n -= 2; }
         if (B > R)
           { s = s + (last = 'B'); B--; }
         else
           { s = s + (last = 'R'); R--; }
         break;
       case 'B':
+        if (B >= O)
+          { s = s + "OB"; O--; B--; n -= 2; }
         if (Y > R)
           { s = s + (last = 'Y'); Y--; }
         else
