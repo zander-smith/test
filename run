@@ -1,0 +1,4 @@
+#!/bin/bash
+make $1
+./$1 < $1$2.in | tee $1$2.out
+diff -s $1$2.out $1$2.ref
