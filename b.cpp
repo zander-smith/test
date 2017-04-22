@@ -17,9 +17,11 @@ string solve(int N, int R, int O, int Y, int G, int B, int V)
   while (n > 0)
   {
     // find max of R, G, Y
-    select (last)
+    switch (last)
     {
       case 'R':
+        if (R >= G)
+          { s = s + "GR"; G--; R--; }
         if (B > Y)
           { s = s + (last = 'B'); B--; }
         else
